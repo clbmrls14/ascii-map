@@ -1,22 +1,34 @@
-const { directions } = require("./src/enums/directions");
-const { tiles } = require("./src/enums/tiles");
-const mapper = require("./src/mapper");
+const { Player } = require("./src/models/player");
+const { World } = require("./src/models/world");
 
-const mappArr = mapper.generateMap(10, 5);
-var mapStr = "";
-mappArr.forEach((col) => {
-  col.forEach((item) => (mapStr += String.fromCharCode(item)));
-  mapStr += "\n";
-});
+const printMap = (worldMap) => {
+  var mapStr = "";
 
-var playerX = 0;
-var playerY = 0;
+  worldMap.forEach((col) => {
+    col.forEach((item) => (mapStr += String.fromCharCode(item)));
+    mapStr += "\n";
+  });
 
-[playerX, playerY] = mapper.movePlayer(
-  mappArr,
-  playerX,
-  playerY,
-  directions.RIGHT
-);
+  console.log(mapStr);
+};
 
-console.log(mapStr);
+const world = new World();
+const player = new Player(world);
+
+printMap(player.getMapWithPlayer());
+
+player.moveRight();
+
+printMap(player.getMapWithPlayer());
+
+player.moveDown();
+
+printMap(player.getMapWithPlayer());
+
+player.moveLeft();
+
+printMap(player.getMapWithPlayer());
+
+player.moveUp();
+
+printMap(player.getMapWithPlayer());
