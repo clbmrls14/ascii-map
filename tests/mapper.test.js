@@ -1,9 +1,11 @@
 const { expect } = require("@jest/globals");
 const { tiles } = require("../src/enums/tiles");
+const { Happening } = require("../src/models/happening");
 
 const { Player } = require("../src/models/player");
+const { Tile } = require("../src/models/tile");
 const { World } = require("../src/models/world");
-const { countOccurrences } = require("./util");
+const util = require("./util");
 
 test("Test map size created", () => {
   const world = new World(10, 5);
@@ -35,10 +37,22 @@ test("Test one and only one player on map", () => {
   const world = new World(10, 5);
   const player = new Player(world);
   const p1 = player.getMapWithPlayer();
-  expect(countOccurrences(p1, tiles.PLAYER)).toEqual(1);
-  expect(p1[0]).toContain(tiles.PLAYER);
+  expect(util.countOccurrences(p1, tiles.PLAYER)).toEqual(1);
   player.moveDown();
   const p2 = player.getMapWithPlayer();
-  expect(countOccurrences(p2, tiles.PLAYER)).toEqual(1);
-  expect(p2[1]).toContain(tiles.PLAYER);
+  expect(util.countOccurrences(p2, tiles.PLAYER)).toEqual(1);
+});
+
+test("Test complete event", () => {
+  const world = new World(10, 5);
+  const player = new Player(world);
+  player.world.world[0][0] = new Tile(
+    tiles.PLAIN,
+    new Happening("Test", () => {
+      console.log("Test happening occurred");
+      return true;
+    })
+  );
+  player.checkHappening();
+  expect(player.world.world[0][0].happening.isCompleted).toBeTruthy();
 });

@@ -4,8 +4,8 @@ const { World } = require("./src/models/world");
 const printMap = (worldMap) => {
   var mapStr = "";
 
-  worldMap.forEach((col) => {
-    col.forEach((item) => (mapStr += String.fromCharCode(item)));
+  worldMap.forEach((row) => {
+    row.forEach((tile) => (mapStr += String.fromCharCode(tile.type)));
     mapStr += "\n";
   });
 
@@ -17,18 +17,6 @@ const player = new Player(world);
 
 printMap(player.getMapWithPlayer());
 
-player.moveRight();
+// player.moveRight();
 
-printMap(player.getMapWithPlayer());
-
-player.moveDown();
-
-printMap(player.getMapWithPlayer());
-
-player.moveLeft();
-
-printMap(player.getMapWithPlayer());
-
-player.moveUp();
-
-printMap(player.getMapWithPlayer());
+// printMap(player.getMapWithPlayer());

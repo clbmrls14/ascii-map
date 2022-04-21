@@ -1,4 +1,6 @@
 const { tiles } = require("../enums/tiles");
+const { Happening } = require("./happening");
+const { Tile } = require("./tile");
 
 class World {
   #cols;
@@ -22,7 +24,7 @@ class World {
     let mapArr = Array.from(Array(this.#rows), () => new Array(this.#cols));
     for (let i = 0; i < this.#rows; i++) {
       for (let j = 0; j < this.#cols; j++) {
-        let possibleTiles = JSON.parse(JSON.stringify(this.#seed));
+        let possibleTiles = [...this.#seed];
 
         if (j - 1 >= 0) {
           possibleTiles.push(mapArr[i][j - 1]);
@@ -35,7 +37,12 @@ class World {
         }
 
         const rand = Math.floor(Math.random() * possibleTiles.length);
-        mapArr[i][j] = possibleTiles[rand];
+        mapArr[i][j] = new Tile(
+          possibleTiles[rand],
+          new Happening("Generic", () => {
+            console.log("Happening occurred.");
+          })
+        );
       }
     }
     return mapArr;

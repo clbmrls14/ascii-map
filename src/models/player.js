@@ -37,9 +37,13 @@ class Player {
     }
   };
 
+  checkHappening = () => {
+    this.world.world[this.row][this.column].happening.handleHappening(this);
+  };
+
   getMapWithPlayer = () => {
     let playerMap = JSON.parse(JSON.stringify(this.world.world));
-    playerMap[this.row][this.column] = tiles.PLAYER;
+    playerMap[this.row][this.column].type = tiles.PLAYER;
 
     return playerMap;
   };

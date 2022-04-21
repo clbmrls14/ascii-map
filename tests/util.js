@@ -3,7 +3,7 @@ const countOccurrences = (arr, val) => {
 
   arr.forEach((subArray) => {
     subArray.forEach((element) => {
-      if (element === val) {
+      if (element.type === val) {
         occurences += 1;
       }
     });
