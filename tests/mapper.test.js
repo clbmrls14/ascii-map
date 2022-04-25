@@ -1,4 +1,6 @@
 const { expect } = require("@jest/globals");
+const { PlainHappenings } = require("../src/enums/happenings");
+const { Items } = require("../src/enums/items");
 const { Tiles } = require("../src/enums/tiles");
 const { Happening } = require("../src/models/happening");
 
@@ -55,4 +57,15 @@ test("Test complete happening", () => {
     );
     player.checkHappening();
     expect(player.world.world[0][0].happening.isCompleted).toBeTruthy();
+});
+
+test("Test adding item to inventory with happening", () => {
+    const world = new World(10, 5);
+    const player = new Player(world);
+    player.world.world[0][0] = new Tile(
+        Tiles.PLAIN,
+        new Happening("Test", PlainHappenings.FIND_RUSTY_KEY)
+    );
+    player.checkHappening();
+    expect(player.inventory).toContain(Items.RUSTY_KEY);
 });
