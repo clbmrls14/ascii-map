@@ -1,11 +1,11 @@
 class Tile {
-  type;
-  happening;
+    type;
+    happening;
 
-  constructor(type, happening) {
-    this.type = type;
-    this.happening = happening;
-  }
+    constructor(type, happening) {
+        this.type = type;
+        this.happening = happening;
+    }
 }
 
 module.exports = { Tile };

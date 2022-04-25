@@ -2,14 +2,14 @@ const { Player } = require("./src/models/player");
 const { World } = require("./src/models/world");
 
 const printMap = (worldMap) => {
-  var mapStr = "";
+    var mapStr = "";
 
-  worldMap.forEach((row) => {
-    row.forEach((tile) => (mapStr += String.fromCharCode(tile.type)));
-    mapStr += "\n";
-  });
+    worldMap.forEach((row) => {
+        row.forEach((tile) => (mapStr += String.fromCharCode(tile.type)));
+        mapStr += "\n";
+    });
 
-  console.log(mapStr);
+    console.log(mapStr);
 };
 
 const world = new World();
