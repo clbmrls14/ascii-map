@@ -1,3 +1,5 @@
+const { Actions } = require("../enums/actions");
+
 class Happening {
     isCompleted = false;
     title;
@@ -8,9 +10,11 @@ class Happening {
         this.method = method;
     }
 
-    handleHappening = (player) => {
+    handleHappening = (player, action = Actions.DEFAULT) => {
         if (!this.isCompleted) {
-            this.isCompleted = this.method(player);
+            const result = this.method(player, action);
+            this.isCompleted = result.isCompleted;
+            player.isBusy = result.actions.length;
         }
     };
 }

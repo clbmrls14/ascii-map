@@ -1,3 +1,4 @@
+const { Actions } = require("./actions");
 const { Items } = require("./items");
 
 const removeItem = (inventory, item) => {
@@ -10,18 +11,45 @@ const removeItem = (inventory, item) => {
 
 const PlainHappenings = {
     FIND_RUSTY_KEY: (player) => {
-        if (!player.inventory.includes(Items.RUSTY_KEY)) {
-            player.inventory.push(Items.RUSTY_KEY);
-        }
-        return true;
+        player.inventory.push(Items.RUSTY_KEY);
+        return {
+            message: "You find a rusty key, maybe it will open something.",
+            actions: [],
+            isCompleted: true,
+        };
     },
-    RUSTY_DOOR: (player) => {
-        if (player.inventory.includes(Items.RUSTY_KEY)) {
-            player.inventory = removeItem(player.inventory, Items.RUSTY_KEY);
-            player.inventory.push(Items.DAGGER);
-            return true;
+    RUSTY_DOOR: (player, action) => {
+        const hasItem = player.inventory.includes(Items.RUSTY_KEY);
+        if (action === Actions.DEFAULT) {
+            return {
+                message: hasItem
+                    ? "There is a rusty door here. It might open with a key. Open the door?"
+                    : "There is a rusty door here. It might open with a key.",
+                actions: hasItem ? [Actions.YES, Actions.NO] : [],
+                isCompleted: false,
+            };
         }
-        return false;
+        if (hasItem) {
+            if (action === Actions.YES) {
+                player.inventory = removeItem(
+                    player.inventory,
+                    Items.RUSTY_KEY
+                );
+                player.inventory.push(Items.DAGGER);
+                return {
+                    message:
+                        "You open the door to find a corpse draped over an open chest. Someone else got the treasure, but you take the dagger in their back.",
+                    actions: [],
+                    isCompleted: true,
+                };
+            } else {
+                return {
+                    message: "You save the key for later.",
+                    actions: [],
+                    isCompleted: false,
+                };
+            }
+        }
     },
 };
 

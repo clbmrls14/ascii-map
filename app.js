@@ -16,7 +16,3 @@ const world = new World();
 const player = new Player(world);
 
 printMap(player.getMapWithPlayer());
-
-// player.moveRight();
-
-// printMap(player.getMapWithPlayer());

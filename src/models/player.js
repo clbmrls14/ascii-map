@@ -1,3 +1,5 @@
+const { Actions } = require("../enums/actions");
+const { Directions } = require("../enums/directions");
 const { Tiles } = require("../enums/tiles");
 
 class Player {
@@ -6,6 +8,7 @@ class Player {
     row;
     health;
     inventory;
+    isBusy;
     weapon = null;
 
     constructor(
@@ -14,6 +17,7 @@ class Player {
         row = 0,
         health = 10,
         inventory = [],
+        isBusy = false,
         weapon = null
     ) {
         this.world = world;
@@ -21,35 +25,44 @@ class Player {
         this.row = row;
         this.health = health;
         this.inventory = inventory;
+        this.isBusy = isBusy;
         this.weapon = weapon;
     }
 
-    moveUp = () => {
-        if (this.row - 1 >= 0) {
-            this.row = this.row - 1;
+    move = (direction) => {
+        if (!this.isBusy) {
+            switch (direction) {
+                case Directions.UP:
+                    if (this.row - 1 >= 0) {
+                        this.row = this.row - 1;
+                    }
+                    break;
+                case Directions.DOWN:
+                    if (this.row + 1 < this.world.world.length) {
+                        this.row = this.row + 1;
+                    }
+                    break;
+                case Directions.LEFT:
+                    if (this.column - 1 >= 0) {
+                        this.column = this.column - 1;
+                    }
+                    break;
+                case Directions.RIGHT:
+                    if (this.column + 1 < this.world.world[0].length) {
+                        this.column = this.column + 1;
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     };
 
-    moveDown = () => {
-        if (this.row + 1 < this.world.world.length) {
-            this.row = this.row + 1;
-        }
-    };
-
-    moveLeft = () => {
-        if (this.column - 1 >= 0) {
-            this.column = this.column - 1;
-        }
-    };
-
-    moveRight = () => {
-        if (this.column + 1 < this.world.world[0].length) {
-            this.column = this.column + 1;
-        }
-    };
-
-    checkHappening = () => {
-        this.world.world[this.row][this.column].happening.handleHappening(this);
+    checkHappening = (action = Actions.DEFAULT) => {
+        this.world.world[this.row][this.column].happening.handleHappening(
+            this,
+            action
+        );
     };
 
     attack = () => {
