@@ -69,3 +69,25 @@ test("Test adding item to inventory with happening", () => {
     player.checkHappening();
     expect(player.inventory).toContain(Items.RUSTY_KEY);
 });
+
+test("Test happening checks inventory and removes a an item if condition is met", () => {
+    const world = new World(10, 5);
+    const player = new Player(world);
+    player.world.world[0][0] = new Tile(
+        Tiles.PLAIN,
+        new Happening("Test get key", PlainHappenings.FIND_RUSTY_KEY)
+    );
+    player.world.world[0][1] = new Tile(
+        Tiles.PLAIN,
+        new Happening("Test find door", PlainHappenings.RUSTY_DOOR)
+    );
+    player.moveRight();
+    player.checkHappening();
+    expect(player.world.world[0][1].happening.isCompleted).toBeFalsy();
+    player.moveLeft();
+    player.checkHappening();
+    player.moveRight();
+    player.checkHappening();
+    expect(player.inventory).toContain(Items.DAGGER);
+    expect(player.inventory).toHaveLength(1);
+});
