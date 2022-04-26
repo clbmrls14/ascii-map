@@ -7,6 +7,7 @@ class Player {
     column;
     row;
     health;
+    coins;
     inventory;
     isBusy;
     weapon = null;
@@ -16,6 +17,7 @@ class Player {
         column = 0,
         row = 0,
         health = 10,
+        coins = 0,
         inventory = [],
         isBusy = false,
         weapon = null
@@ -24,6 +26,7 @@ class Player {
         this.column = column;
         this.row = row;
         this.health = health;
+        this.coins = coins;
         this.inventory = inventory;
         this.isBusy = isBusy;
         this.weapon = weapon;
@@ -67,8 +70,10 @@ class Player {
 
     attack = () => {
         if (this.weapon === null) {
+            console.log("dealt one damage");
             return 1;
         }
+        console.log("dealt some damage");
         return this.weapon.rollDamage + 1;
     };
 

@@ -112,3 +112,18 @@ test("Test happening checks inventory and removes a an item if condition is met"
     expect(player.inventory).toContain(Items.DAGGER);
     expect(player.inventory).toHaveLength(1);
 });
+test("Test fight goblins", () => {
+    const world = new World(10, 5);
+    const player = new Player(world);
+    player.world.world[0][0] = new Tile(
+        Tiles.PLAIN,
+        new Happening("Test fight goblin", PlainHappenings.GOBLIN)
+    );
+    player.checkHappening(); // Start the fight
+    expect(player.isBusy).toBeTruthy();
+    player.checkHappening(Actions.ATTACK);
+    player.checkHappening(Actions.ATTACK);
+    player.checkHappening(Actions.ATTACK);
+    player.checkHappening(Actions.ATTACK);
+    expect(player.coins).toBeGreaterThan(0);
+});

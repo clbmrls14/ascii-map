@@ -18,6 +18,52 @@ const PlainHappenings = {
             isCompleted: true,
         };
     },
+    GOBLIN: (player, action, combatStatus) => {
+        switch (action) {
+            case Actions.DEFAULT:
+                return {
+                    message: "You stumble onto an angry goblin!",
+                    actions: [Actions.ATTACK, Actions.FLEE],
+                    isCompleted: false,
+                    combatStatus: { enemyHealth: 4 },
+                };
+            case Actions.ATTACK:
+                const damage = player.attack();
+                combatStatus.enemyHealth -= damage;
+                if (combatStatus.enemyHealth < 1) {
+                    const earnings = Math.floor(Math.random() * 4) + 2;
+                    player.coins += earnings;
+                    return {
+                        message: `You strike with your ${player.weapon} for ${damage} damage, 
+                        slaying the goblin! You find ${earnings} 
+                        gold on the corpse.`,
+                        actions: [],
+                        isCompleted: true,
+                    };
+                }
+                return {
+                    message: `You strike with your ${player.weapon} for ${damage} damage!`,
+                    actions: [Actions.ATTACK, Actions.FLEE],
+                    isCompleted: false,
+                    combatStatus: combatStatus,
+                };
+            case Actions.FLEE:
+                if (Math.random() < 0.5) {
+                    return {
+                        message: "You manage to escape!",
+                        actions: [],
+                        isCompleted: false,
+                    };
+                } else {
+                    return {
+                        message: "You are unable to escape!",
+                        actions: [Actions.ATTACK, Actions.FLEE],
+                        isCompleted: false,
+                        combatStatus: combatStatus,
+                    };
+                }
+        }
+    },
     RUSTY_DOOR: (player, action) => {
         const hasItem = player.inventory.includes(Items.RUSTY_KEY);
         if (action === Actions.DEFAULT) {
